@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "cells": [
+    {
+      "type": "cs",
+      "input": "assist"
+    },
+    {
+      "type": "cs",
+      "input": "importFiles"
+    },
+    {
+      "type": "cs",
+      "input": "importFiles [ \"/Users/ag30103/Desktop/GBUS738/insurance.csv\" ]"
+    },
+    {
+      "type": "cs",
+      "input": "setupParse source_frames: [ \"nfs://Users/ag30103/Desktop/GBUS738/insurance.csv\" ]"
+    },
+    {
+      "type": "cs",
+      "input": "getFrames"
+    },
+    {
+      "type": "cs",
+      "input": "parseFiles\n  source_frames: [\"nfs://Users/ag30103/Desktop/GBUS738/insurance.csv\"]\n  destination_frame: \"insurance.hex\"\n  parse_type: \"CSV\"\n  separator: 44\n  number_columns: 7\n  single_quotes: false\n  column_names: [\"age\",\"sex\",\"bmi\",\"children\",\"smoker\",\"region\",\"charges\"]\n  column_types: [\"Numeric\",\"Enum\",\"Numeric\",\"Enum\",\"Enum\",\"Enum\",\"Numeric\"]\n  delete_on_done: true\n  check_header: 1\n  chunk_size: 4194304"
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"insurance.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "assist splitFrame, \"insurance.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "splitFrame \"insurance.hex\", [0.7,0.15], [\"insurance.hex_train_0.70\",\"insurance.hex_val_0.150\",\"insurance.hex_test_0.150\"], 555264"
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"insurance.hex_train_0.70\""
+    },
+    {
+      "type": "cs",
+      "input": "assist buildModel, null, training_frame: \"insurance.hex_train_0.70\""
+    },
+    {
+      "type": "cs",
+      "input": "buildModel 'xgboost', {\"model_id\":\"xgboost-f75f76c0-1623-4035-8b54-d015243d3f7b\",\"training_frame\":\"insurance.hex_train_0.70\",\"validation_frame\":\"insurance.hex_val_0.150\",\"nfolds\":0,\"response_column\":\"charges\",\"ignored_columns\":[],\"ignore_const_cols\":true,\"seed\":-1,\"ntrees\":50,\"max_depth\":6,\"min_rows\":1,\"min_child_weight\":1,\"learn_rate\":0.3,\"eta\":0.3,\"sample_rate\":1,\"subsample\":1,\"col_sample_rate\":1,\"colsample_bylevel\":1,\"score_each_iteration\":false,\"stopping_rounds\":0,\"stopping_metric\":\"AUTO\",\"stopping_tolerance\":0.001,\"max_runtime_secs\":0,\"distribution\":\"AUTO\",\"categorical_encoding\":\"AUTO\",\"col_sample_rate_per_tree\":1,\"colsample_bytree\":1,\"monotone_constraints\":[],\"score_tree_interval\":0,\"min_split_improvement\":0,\"gamma\":0,\"max_leaves\":0,\"tree_method\":\"auto\",\"grow_policy\":\"depthwise\",\"dmatrix_type\":\"auto\",\"quiet_mode\":true,\"max_abs_leafnode_pred\":0,\"max_delta_step\":0,\"nthread\":-1,\"build_tree_one_node\":false,\"calibrate_model\":false,\"max_bins\":256,\"min_sum_hessian_in_leaf\":100,\"min_data_in_leaf\":0,\"sample_type\":\"uniform\",\"normalize_type\":\"tree\",\"rate_drop\":0,\"one_drop\":false,\"skip_drop\":0,\"booster\":\"gbtree\",\"reg_lambda\":1,\"reg_alpha\":0,\"backend\":\"auto\",\"gpu_id\":0}"
+    },
+    {
+      "type": "cs",
+      "input": "getModel \"xgboost-f75f76c0-1623-4035-8b54-d015243d3f7b\""
+    },
+    {
+      "type": "cs",
+      "input": "predict model: \"xgboost-f75f76c0-1623-4035-8b54-d015243d3f7b\""
+    },
+    {
+      "type": "cs",
+      "input": "predict model: \"xgboost-f75f76c0-1623-4035-8b54-d015243d3f7b\", frame: \"insurance.hex_test_0.150\", predictions_frame: \"prediction-e2b602d9-6cc8-4aec-8e7c-6e9033731180\""
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"insurance.hex_test_0.150\""
+    },
+    {
+      "type": "cs",
+      "input": "getFrameData \"insurance.hex_test_0.150\""
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"prediction-e2b602d9-6cc8-4aec-8e7c-6e9033731180\""
+    },
+    {
+      "type": "cs",
+      "input": "getFrameData \"prediction-e2b602d9-6cc8-4aec-8e7c-6e9033731180\""
+    }
+  ]
+}
